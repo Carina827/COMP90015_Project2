@@ -1,0 +1,48 @@
+/***
+ * The University of Melbourne
+ * COMP90015 Distributed Systems
+ * FileName: ServerState.java 
+ 
+ * This class constructs two methods for storing the player's name 
+   and returning the number of stones removed.
+ 
+ * @author  Jing Du
+ * @Student Number  775074
+ * @Username  du2
+ * @E-mail.addr  du21@student.unimelb.edu.au
+ * @Date  06/09/2018 
+ ***/
+package server;
+
+import java.util.ArrayList;
+import java.util.List;
+
+//Singleton object that manages the server state
+public class ServerState {
+
+	private static ServerState instance;
+	private List<ClientConnection> connectedClients;
+	
+	private ServerState() {
+		connectedClients = new ArrayList<>();
+	}
+	
+	public static synchronized ServerState getInstance() {
+		if(instance == null) {
+			instance = new ServerState();
+		}
+		return instance;
+	}
+	
+	public synchronized void clientConnected(ClientConnection client) {
+		connectedClients.add(client);
+	}
+	
+	public synchronized void clientDisconnected(ClientConnection client) {
+		connectedClients.remove(client);
+	}
+	
+	public synchronized List<ClientConnection> getConnectedClients() {
+		return connectedClients;
+	}
+}
